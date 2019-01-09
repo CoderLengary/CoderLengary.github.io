@@ -49,7 +49,7 @@ public boolean superDispatchTouchEvent(MotionEvent ev){
 }
 ```
 这里就十分清晰了，PhoneWindow把事件传给了DecorView。而我们通过setContentView设置的View是DecorView的子View。事件接下来将会传给这个子View。一般来说这个子View会是一个ViewGroup。
-![](http://opsprcvob.bkt.clouddn.com/View%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6.png)
+![View的事件分发机制](https://i.loli.net/2019/01/09/5c35fa61c5fe0.png)
 ### ViewGroup点击事件的分发过程
 首先我们看下ViewGroup的拦截过程，也就是dispatchTouchEvent的拦截部分代码
 ```
@@ -68,7 +68,7 @@ if(actionMasked == MotionEvent.ACTION_DOWN || mFirstTouchTarget != null){//判�
 从上面可以看出，ViewGroup会在ACTION_DOWN和mFirstTouchTarget != null的情况下判断是否进行拦截，注意是判断。当事件被viewGroup的子元素成功处理的时候，mFirstTouchTarget != null。意思是，如果ViewGroup不拦截，子元素处理了，mFirstTouchTarget != null。如果ViewGroup拦截了，那么mFirstTouchTarget == null，所以当ACTION_MOVE和ACTION_UP事件来临的时候，由于既不是ACTION_DOWN，且mFirstTouchTarget == null，统统都会交给ViewGroup处理，并且不会再调用onInterceptTouchEvent。
 总结成一句话就是，如果ViewGroup拦截了事件，那么事件序列都会交给它处理。
 当然，上面有一个FLAG_DISALLOW_INTERCEPT，它是干嘛的呢，它是一般是由子View通过requestDisallowInterceptedTouchEvent设置的。设置后，ViewGroup将无法拦截除了ACTION_DOWN以外的其它点击事件(前提是ViewGroup不拦截ACTION_DOWN)。ACTION_DOWN会重置这个标记位，也就意味着面对ACTION_DOWN的时候，ViewGroup一定会调用自己的onInterceptTouchEvent。
-![](http://opsprcvob.bkt.clouddn.com/ViewGroup%E7%9A%84dispatchTouchEvent.png)
+![ViewGroup的dispatchTouchEvent](https://i.loli.net/2019/01/09/5c35fa8ab56a9.png)
 总结两点
 1. 当确定拦截后，onInterceptTouchEvent不是每次事件都会调用的，要处理所有的事件，就要在dispatchTouchEvent中处理。
 2. FLAG_DISALLOW_INTERCEPTED给我们思路去解决滑动冲突问题。
@@ -82,13 +82,13 @@ for(int i = childerenCount - 1; i>0 ;i--){
     if(!canViewReceivePointerEvents(child) || !isTransformedTuchPointInView(x, y, child, null)){
         continue;
     }
-    
+
     newTouchTarget = getTouchTarget(child);
     if(newTouchTarget != null){
         newTouchTarget.pointerIdBits != idBitsToAssign;
         break;
     }
-    
+
     resetCancelNextUpFlag(child);
     if(dispatchTransformedTouchEvent(ev, false, child, idBitsToAssign)){
         mLastTouchDownTime = ev.getDownTime();
@@ -108,7 +108,7 @@ for(int i = childerenCount - 1; i>0 ;i--){
         alreadyDispatchedToNewTouchTarget = true;
         break;
     }
-    
+
 }
 ```
 上面代码主要的意思是先遍历ViewGroup的所有子元素，然后判断子元素是否能接收到点击事件（子元素是否在播放动画，点击事件的坐标是否落在子元素的区域内）。如果某个子元素这些条件都满足，那么就把事件交给它。dispatchTransformedTouchEvent实际上就是调用子元素的也就是dispatchTouchEvent的拦截部分代码。
@@ -163,7 +163,7 @@ public boolean dispatchTouchEvent(MotionEvent event){
                li.mOnTouchListener.onTouch(this, event)){
             result = true;
         }
-        
+
         if(!result && onTouchEvent(event)){
             result = true;
         }

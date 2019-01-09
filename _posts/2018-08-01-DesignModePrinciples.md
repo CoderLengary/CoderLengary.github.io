@@ -16,13 +16,13 @@ categories: [设计模式]
 这里给一个例子（来自网上）
 我们现在在经营一家书店，书店里自然售卖书籍。所以我们定义了以下类。
 
-![](http://opsprcvob.bkt.clouddn.com/%E5%BC%80%E6%94%BE%E5%B0%81%E9%97%AD%E5%8E%9F%E5%88%99-%E4%B9%A6%E5%BA%971.png)
+![开放封闭原则-书店1](https://i.loli.net/2019/01/09/5c35f10d972ed.png)
 书籍接口以及书籍类别：
-![](http://opsprcvob.bkt.clouddn.com/%E5%BC%80%E6%94%BE%E5%B0%81%E9%97%AD%E5%8E%9F%E5%88%99-%E4%B9%A6%E5%BA%972.png)
+![开放封闭原则-书店2](https://i.loli.net/2019/01/09/5c35f12aedd7c.png)
 书店实现：
-![](http://opsprcvob.bkt.clouddn.com/%E5%BC%80%E6%94%BE%E5%B0%81%E9%97%AD%E5%8E%9F%E5%88%99-%E4%B9%A6%E5%BA%973.png)
+![开放封闭原则-书店3](https://i.loli.net/2019/01/09/5c35f148e2755.png)
 运行结果：
-![](http://opsprcvob.bkt.clouddn.com/%E5%BC%80%E6%94%BE%E5%B0%81%E9%97%AD%E5%8E%9F%E5%88%99-%E4%B9%A6%E5%BA%974.png)
+![开放封闭原则-书店4](https://i.loli.net/2019/01/09/5c35f166d3490.png)
 
 项目投产，书店盈利，但为扩大市场，书店决定，40元以上打8折，40元以下打9 折。如何解决这个问题呢？
 
@@ -35,26 +35,26 @@ categories: [设计模式]
 
 第三个办法：最优方案，通过扩展实现变化。增加一个子类 OffNovelBook，覆写getPrice方法，高层次的模块（也就是static静态模块区）通过OffNovelBook类产生新的对象，完成对业务变化开发任务。好办法，风险也小，我们来看类图：
 
-![](http://opsprcvob.bkt.clouddn.com/%E5%BC%80%E6%94%BE%E5%B0%81%E9%97%AD%E5%8E%9F%E5%88%99-%E4%B9%A6%E5%BA%975.png)
+![开放封闭原则-书店5](https://i.loli.net/2019/01/09/5c35f18ecda66.png)
 
 书籍接口以及书籍类别：
-![](http://opsprcvob.bkt.clouddn.com/%E5%BC%80%E6%94%BE%E5%B0%81%E9%97%AD%E5%8E%9F%E5%88%99-%E4%B9%A6%E5%BA%976.png)
+![开放封闭原则-书店6](https://i.loli.net/2019/01/09/5c35f269b5cf4.png)
 
 书店实现：
-![](http://opsprcvob.bkt.clouddn.com/%E5%BC%80%E6%94%BE%E5%B0%81%E9%97%AD%E5%8E%9F%E5%88%99-%E4%B9%A6%E5%BA%977.png)
+![开放封闭原则-书店7](https://i.loli.net/2019/01/09/5c35f28e32dfc.png)
 
 运行结果：
-![](http://opsprcvob.bkt.clouddn.com/%E5%BC%80%E6%94%BE%E5%B0%81%E9%97%AD%E5%8E%9F%E5%88%99-%E4%B9%A6%E5%BA%978.png)
+![开放封闭原则-书店8](https://i.loli.net/2019/01/09/5c35f2aa2b0b3.png)
 
 ### 里氏替换原则
 里氏替换原则就是，将一个基类对象替换成其子类对象，程序就不会产生任何错误和异常。反之则不成立，如果一个子类替换成基类，程序可能会产生错误。
 我们来看一个违反里氏替换原则的例子。
 我们需要完成一个两数相减的功能，由类Subtraction来负责：
-![](http://opsprcvob.bkt.clouddn.com/%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%8D%A2%E5%8E%9F%E5%88%991.png)
+![里氏替换原则1](https://i.loli.net/2019/01/09/5c35f2d26f423.png)
 运行结果：
-![](http://opsprcvob.bkt.clouddn.com/%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%8D%A2%E5%8E%9F%E5%88%992.png)
+![里氏替换原则2](https://i.loli.net/2019/01/09/5c35f2f1ece26.png)
 后来，我们需要增加一个新的功能：完成两数相加，然后再与100求和，由类Add来负责。所以类Add继承类Subtraction后，代码如下：
-![](http://opsprcvob.bkt.clouddn.com/%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%8D%A2%E5%8E%9F%E5%88%993.png)
+![里氏替换原则3](https://i.loli.net/2019/01/09/5c35f30f21a8b.png)
 我们发现原来运行正常的相减功能发生了错误。原因就是类Add在给方法起名时无意中重写了父类的方法，造成所有运行相减功能的代码全部调用了类Add的重写后的方法，造成原本运行正常的功能出现了错误。
 在这里，父类被子类替换后，原来的程序出现了错误。
 

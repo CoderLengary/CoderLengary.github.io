@@ -8,7 +8,7 @@ categories: [Android]
 本APP采用了MVP+RXJAVA的架构。是一款基于[WanAndroid](http://www.wanandroid.com/)网站内容进行开发的应用。
 鸿洋大佬在WanAndroid网站上提供了网站的[API](http://www.wanandroid.com/blog/show/2)。你可以点进去查看API的具体文档。
 
-## 需求设计 
+## 需求设计
 
 在写APP之前，我们应当首先思考下这个APP应该要实现什么功能。看了一下API文档，我们能够提取出以下基本需求（不包括API所有需求）。
 
@@ -33,8 +33,8 @@ categories: [Android]
 以首页文章列表API为例
 
 http://www.wanandroid.com/article/list/0/json
-    
-    
+
+
 ```
 {
 "data": {
@@ -56,7 +56,7 @@ http://www.wanandroid.com/article/list/0/json
             "origin": "",
             "projectLink": "https://github.com/leon2017/GankJetpack",
             "publishTime": 1531059687000,
-            "superChapterId": 294, 
+            "superChapterId": 294,
             "superChapterName": "开源项目主Tab",
             "tags": [
                 {
@@ -85,28 +85,25 @@ http://www.wanandroid.com/article/list/0/json
 从返回的数据我们可以看到文章的id，title，link等数据，要获取文章详细内容很简单，打开它的link链接就好。
 这里要推荐下一款好用的网页调试软件[Postman](https://www.getpostman.com/)。当你在postman发送相关的API后，Postman就会返回可读性强的结果。
 
-![此处输入图片的描述][1]
+![postman](https://i.loli.net/2019/01/09/5c35ff35aa667.png)
 
 
-<center>![此处输入图片的描述][2]</center>
 
 
 ## 界面UI设计
- 
 
- - LauncherIcon 
+
+ - LauncherIcon
  你可以在[Android Asset Studio](https://romannurik.github.io/AndroidAssetStudio/index.html)上生成自己喜欢的Launcher Icon图标
- - 界面里的图标Icon 
+ - 界面里的图标Icon
  为了遵循Material Design， 尽量在AS自带的图标里选取
  - 界面设计元素的布局规范与标准
  考虑到404的情况，这里有一份中文文档[Material Design 中文版](http://design.1sters.com/)，当然里面的内容不是最新最全的，不过也能满足大部分需求了
 
-<center>![此处输入图片的描述][3]</center>
-
 在本APP的设计中，我用Drawer作为顶级导航，BottomNavigationView作为二级导航，三级导航是TabLayout。界面的设计效果如下。
 
-<center>![此处输入图片的描述][4]</center>
-<center>![此处输入图片的描述][5]</center>
+<center>![screenshot0](https://i.loli.net/2019/01/09/5c35ffc1bef03.jpg)</center>
+<center>![screenshot1](https://i.loli.net/2019/01/09/5c360058ddf6d.jpg)</center>
 
 
 ## 代码编写（以首页文章为例）
@@ -119,18 +116,18 @@ http://www.wanandroid.com/article/list/0/json
 
 ```
 public class ArticlesData {
-        
+
     @Expose
     @SerializedName("errorCode")
     private int errorCode;
     @Expose
     @SerializedName("errorMsg")
     private String errorMsg;
-        
+
     @Expose
     @SerializedName("data")
     private Data data;
-        
+
     public class Data{
         @Expose
         @SerializedName("datas")
@@ -155,10 +152,10 @@ public class ArticlesData {
 ```
 [ArticleDetailData][7]
 
-   
+
 ```
 public class ArticleDetailData extends RealmObject {
-    
+
     @Expose
     @SerializedName("author")
     private String author;
@@ -186,7 +183,7 @@ public class ArticleDetailData extends RealmObject {
     */
 }
 ```
-    
+
 
 
 ### 网络请求库代码编写（只显示关键代码）
@@ -237,23 +234,23 @@ public interface RetrofitService {
 
    @GET(Api.ARTICLE_LIST + "{page}/json")
    Observable<ArticlesData> getArticles(@Path("page") int page);
-  
+
 }
 ```
 你可能会问什么是Rxjava，Rxjava就是在观察者模式的骨架下，通过丰富的操作符和便捷的异步操作来完成对于复杂业务的处理的框架。可以参考扔物线写的[《给 Android 开发者的 RxJava 详解》](http://gank.io/post/560e15be2dca930e00da1083)，需要指出的是里面有些内容是过时的，不过这篇文章对RxJava讲的很浅显易懂，所以还是推荐它用于入门。
-<center>![此处输入图片的描述][10]</center>
+
 
 ### Model层构建（只显示关键代码）
 [ArticlesDataSource][11]
 ```
 public interface ArticlesDataSource {
-    
+
     Observable<List<ArticleDetailData>> getArticles(@NonNull int page, @NonNull boolean forceUpdate, @NonNull boolean clearCache);
-        
+
 }
 ```
-    
-    
+
+
 [ArticlesDataRemoteSource][12]
 ```
 public class ArticlesDataRemoteSource implements ArticlesDataSource {
@@ -330,7 +327,7 @@ public class ArticlesDataRepository implements ArticlesDataSource{
 
     private Map<Integer, ArticleDetailData> articlesCache;
 
-   
+
     private final int INDEX = 0;
 
     @NonNull
@@ -363,9 +360,6 @@ public class ArticlesDataRepository implements ArticlesDataSource{
  2. 相关实体类不能有内部类，变量中有List的要写成RealmList
  3. 增删改查等操作里，Realm只能是局部变量
  4. 增删改完成后要及时调用realm.close();
- 
-
-<center>![此处输入图片的描述][14]</center>
 
 
 
@@ -442,7 +436,7 @@ APP大致的界面搭建是这样的，我们就完成首页的搭建就好。
 ```
 [fragment_timeline][17]
 
- 
+
 ```
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -472,7 +466,7 @@ APP大致的界面搭建是这样的，我们就完成首页的搭建就好。
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </android.support.design.widget.CoordinatorLayout>
 ```
-    
+
 [fragment_timeline_page][18]，没错，这就是ArticlesFragment的界面
 
 ```
@@ -548,12 +542,12 @@ APP大致的界面搭建是这样的，我们就完成首页的搭建就好。
 
 </android.support.design.widget.CoordinatorLayout>
 ```
-    
-    
+
+
 ### View层和Present层
 
 既然采用的是MVP+RXJAVA，如果你对此不是很懂的话，可以看下谷歌的官方项目[todo‑mvp‑rxjava](https://github.com/googlesamples/android-architecture/tree/todo-mvp-rxjava/)。MVP就指的是Mpdel-View-Present。MVP模式的核心思想就是把视图中的UI逻辑抽象成View接口，把业务逻辑抽象成Presenter接口。也就是视图就只负责显示，其它的逻辑都交给了Presenter。这样就大大降低了代码的耦合，提高代码的可阅读性。
-![此处输入图片的描述][19]
+![MVP](https://i.loli.net/2019/01/09/5c36070060e9c.png)
 Model层我们前面已经写好了，那么就剩下View层和Present层了。首先就是写BasePresenter和BaseView。
 [BasePresenter][20]
 ```
@@ -603,7 +597,7 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
     private CompositeDisposable compositeDisposable;
     private ArticlesContract.View view;
     private ArticlesDataRepository articleRepository;
-    
+
     public ArticlesPresenter(ArticlesContract.View view,ArticlesDataRepository articleRepository){
         this.articleRepository = articleRepository;
         this.view = view;
@@ -663,7 +657,7 @@ public class ArticlesPresenter implements ArticlesContract.Presenter {
 [ArticlesFragment][24]， 显示数据
 ```
 public class ArticlesFragment extends Fragment implements ArticlesContract.View{
-  
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -702,7 +696,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 
     @Override
     public void setLoadingIndicator(final boolean isActive) {
-        
+
     }
 
     @Override
@@ -720,7 +714,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 
 至此，我们就完成首页文章列表的基本搭建了。没有细写显示数据是因为每一个人的设计理念都不一样，每个人都有不同的实现方式。
 接下来的获取收藏列表/搜索文章/获取Banner/登陆注册等操作与这部分操作没有多大差异，就不一一细说了，大致的流程如下
-![//图片][25]
+![层次说明](https://i.loli.net/2019/01/09/5c36016fcf0fe.png)
 
 
 
@@ -733,17 +727,17 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 
 收藏
 
- 
+
 
     http://www.wanandroid.com/lg/collect/1165/json
-        
+
     方法：POST
     参数： 文章id，拼接在链接中。
 
 取消收藏
 
     http://www.wanandroid.com/lg/uncollect_originId/2333/json
-    
+
     方法：POST
     参数：id 拼接在链接上
 
@@ -756,7 +750,7 @@ public class ArticlesFragment extends Fragment implements ArticlesContract.View{
 密码：12345678
 
 打开PostMan，用登陆的API http://www.wanandroid.com/user/login/?username=WanAndroidWan&password=12345678 进行登陆操作，查看Cookies，如图
-![//图片][26]
+![Cookies](https://i.loli.net/2019/01/09/5c3605af9efcc.png)
 这就是Cookies，它就相当于身份证，你在收藏/取消收藏的操作中都要带上这些Cookies，服务器才会正确识别你的身份并返回正确的数据，否则服务器会返回errorcode 为 -1 ，errormessage 为 “请先登录” 的错误。这就是前面那句话“建议登录将返回的cookie（其中包含账号、密码）持久化到本地”的含义。那么问题来了，如何持久化Cookies呢，由于本APP使用的是Retrofit，所以我推荐阅读下这篇文章[《Retrofit 2.0 超能实践（二），Okhttp完美同步持久Cookie实现免登录》](https://www.jianshu.com/p/1a5f14b63f47)。
 
 
@@ -810,16 +804,15 @@ public class App extends Application {
 ### 致谢
 在这个项目中，最感谢的人就是[Tonny大佬](https://github.com/TonnyL)了。在安卓编程的道路上，从一个啥都不懂得小白到现在，是他一直给我指引、鼓励和信心。他对编程的热爱也深深影响了我，我也想成长为像他那样的人。在这个项目中，他给我了很多帮助，在这里对他表示最诚挚的感谢！
 
- 
- 
- 
-  
 
 
-  [1]: http://opsprcvob.bkt.clouddn.com/wanandroidpostman1.jpg
-  [2]: http://opsprcvob.bkt.clouddn.com/%E8%A1%A8%E6%83%85%E5%8C%85%5B%E7%89%9B%E9%80%BC%5D.jpg
+
+
+
+
+  [1]: https://i.loli.net/2019/01/09/5c35ff35aa667.png
   [3]: http://opsprcvob.bkt.clouddn.com/%E8%A1%A8%E6%83%85%E5%8C%85%5B%E6%A2%AF%E5%AD%902%5D.png
-  [4]: http://opsprcvob.bkt.clouddn.com/wanandroidscreenshot1.jpg
+  [4]: https://i.loli.net/2019/01/09/5c35ffc1bef03.jpg
   [5]: http://opsprcvob.bkt.clouddn.com/wanandroidscreenshot2.jpg
   [6]: https://github.com/CoderLengary/WanAndroid/blob/master/app/src/main/java/com/example/lengary_l/wanandroid/data/ArticlesData.java
   [7]: https://github.com/CoderLengary/WanAndroid/blob/master/app/src/main/java/com/example/lengary_l/wanandroid/data/ArticleDetailData.java

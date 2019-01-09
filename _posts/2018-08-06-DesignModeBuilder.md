@@ -231,7 +231,7 @@ public Student build(){
   }
 ```
 介绍了这个，我们来看下完整版的建造者模式。
-![](http://opsprcvob.bkt.clouddn.com/%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F.png)
+![建造者模式](https://i.loli.net/2019/01/09/5c35eef8ec414.png)
 在建造者模式中有以下角色：
 - Director：导演类，负责安排已有模块的顺序，然后通知Builder进行建造
 - Builder：抽象Builder类，规范产品的组件，一般由子类实现

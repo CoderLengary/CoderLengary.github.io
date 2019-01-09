@@ -244,7 +244,7 @@ fun createIntent(intentData: String, intentAction: String) =
 ### 函数选择
 因此，通过这三个特性，我们可以清楚地将这些函数归类。如下，我们可以建立一个决策树，它可以帮助我们决定使用哪种函数，这一切都依赖于我们的需求。
 
-![](http://opsprcvob.bkt.clouddn.com/Kotlin%E5%87%BD%E6%95%B0.jpg)
+![Kotlin函数](https://i.loli.net/2019/01/09/5c3577a28c196.jpg)
 
 希望这个决策树能帮助你更好地理解这些函数，能够简化你的决策，让你能很好地掌握这些函数的用法
 

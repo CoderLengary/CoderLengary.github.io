@@ -20,7 +20,7 @@ Handler创建完毕后，其内部的Looper和MessageQueue就可以和Handler一
 Handler可以通过post或者send投递信息，调用MessageQueue的enqueueMessage方法把这个消息塞到消息队列里面。Looper不断访问MessageQueue，发现有新消息到来了，就会处理这个消息。最后消息中的Runnable或者Handler的handlerMessage就会被调用。
 
 注意Looper是运行在创建Handler所在的线程中的，这样一来Handler中的业务逻辑就被切换到创建Handler所在的线程中执行了。
-![](http://opsprcvob.bkt.clouddn.com/Handle%E7%9A%84%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B.png)
+![Handle的工作过程](https://i.loli.net/2019/01/09/5c35f38f96e3f.png)
 
 ## Android的消息机制分析
 本节分为四个部分，分别是ThreadLocal、MessageQueue、Looper、Handler的工作原理
@@ -96,7 +96,7 @@ public void set(T value){
 下面看下localValues的put方法
 ```
 void put(ThreadLocal<?> key, Object value) {
-    
+
     cleanUp();
 
     // Keep track of first tombstone. That's where we want to go back
@@ -160,13 +160,13 @@ public T get(){
     } else {
         //如果localValues为null，则初始化
         values = initializeValues(currentThread);
-        
+
     }
     return (T) values.getAfterMiss(this);
 }
 ```
 从ThreadLocal的set和get方法中可以看出，他们所操作的对象都是当前线程的localValues对象的table数组。因此对不同线程访问ThreadLocal，它们对ThreadLocal的操作都仅限于当前线程的内部，这就是ThreadLocal可以在不同线程互不干扰存储修改数据的奥秘。
-![](http://opsprcvob.bkt.clouddn.com/ThreadLocal%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.png)
+![ThreadLocal的工作原理](https://i.loli.net/2019/01/09/5c35f3d05f226.png)
 ### MessageQueue的工作原理
 MessageQueue是以单链表为数据结构来维护消息列表的，单链表在插入和删除上比较有优势。
 
@@ -201,14 +201,14 @@ boolean enqueueMessage(Message msg, long when)
 }
 
 ```
-先看下新消息需要放到队头的情况：p == null || when == 0 || when < p.when。即队列为空，或者新消息需要立即处理，或者新消息处理的事件比队头消息更早被处理。这时只要让新消息的next指向当前队头，让mMessages指向新消息即可完成插入操作。 
-![](http://opsprcvob.bkt.clouddn.com/Message%E9%98%9F%E5%88%97%E6%8F%92%E5%85%A51-0.png)
+先看下新消息需要放到队头的情况：p == null || when == 0 || when < p.when。即队列为空，或者新消息需要立即处理，或者新消息处理的事件比队头消息更早被处理。这时只要让新消息的next指向当前队头，让mMessages指向新消息即可完成插入操作。
+![Message队列插入1-0](https://i.loli.net/2019/01/09/5c35f8bd782d4.png)
 
-除了上述三种情况就需要遍历队列来确定新消息位置了，下面结合示意图来说明。 
-假设当前消息队列如下 
-![](http://opsprcvob.bkt.clouddn.com/Message%E9%98%9F%E5%88%97%E6%8F%92%E5%85%A52-0.png)
-![](http://opsprcvob.bkt.clouddn.com/Message%E9%98%9F%E5%88%97%E6%8F%92%E5%85%A52-1.png)
-![](http://opsprcvob.bkt.clouddn.com/Message%E9%98%9F%E5%88%97%E6%8F%92%E5%85%A52-2.png)
+除了上述三种情况就需要遍历队列来确定新消息位置了，下面结合示意图来说明。
+假设当前消息队列如下
+![Message队列插入2-0](https://i.loli.net/2019/01/09/5c35f8dd297e5.png)
+![Message队列插入2-1](https://i.loli.net/2019/01/09/5c35f8fca76a2.png)
+![Message队列插入2-2](https://i.loli.net/2019/01/09/5c35f91ee1d52.png)
 
 接下来我们看下next方法的实现
 ```
@@ -249,7 +249,7 @@ Message next() {
 }
 ```
 可以发现next是一个无限循环的方法，如果消息队列中没有消息，那么next方法会一直阻塞在这里。当有新消息到来的时候，next方法会返回这条信息并从单链表中移除
-![](http://opsprcvob.bkt.clouddn.com/Message%E9%98%9F%E5%88%97%E5%88%A0%E9%99%A4.png)
+![Message队列删除](https://i.loli.net/2019/01/09/5c35f9410c338.png)
 
 ### Looper的工作原理
 Looper会不断地从MessageQueue中查看是否有新消息，有新消息就立刻处理，否则就一直阻塞在那里。在构造方法里它会创建一个MessageQueue，然后将当前线程的对象保存起来。
@@ -339,7 +339,7 @@ public final boolean sendMessage(Message msg){
     return sendMessageDelayed(msg, 0);
 }
 
- 
+
 
 public final boolean sendMessageDelayed(Message msg, long delayMillis){
     if (delayMillis < 0) {
@@ -402,4 +402,4 @@ public interface Callback{
 这种方法成立的前提是，你在创建Handler的时候，就把Callback传进去了。如：Handler handler = new Handler(callback);在日常开发中，我们常常是派生Handler的子类重写它的handleMessage来处理具体消息，而是用Callback就可以不用派生Handler的子类来创建Handler，处理逻辑都写在Callback里面了。
 
 - 最后，如果mCallback是null，也就是说我们没有用Handler handler = new Handler(callback)来创建一个Handler，而是派生Handler的子类重写它的handleMessage来创建一个Handler。这就会直接调用handleMessage(msg);来处理消息。
-![](http://opsprcvob.bkt.clouddn.com/Handler%E6%B6%88%E6%81%AF%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
+![Handler消息处理流程图](https://i.loli.net/2019/01/09/5c35f972bafab.png)

@@ -6,7 +6,7 @@ featured-img: raindrop_glass
 categories: [Android]
 ---
 要介绍View的三大流程：measure、layout、draw之前，我们需要先认识一下ViewRoot。ViewRoot对应于ViewRootImpl类，是连接WindowManager和DecorView的纽带，View的三大流程：measure、layout、draw都是由ViewRoot完成的。这个流程的开始是从ViewRoot的performTraversals方法开始的。具体如下
-![](http://opsprcvob.bkt.clouddn.com/View%E7%9A%84%E7%BB%98%E5%88%B6%E6%B5%81%E7%A8%8B.png)
+![View的绘制流程](https://i.loli.net/2019/01/09/5c35f9af80af0.png)
 在Measure流程中，ViewGroup的performMeasure会调用measure，measure会调用onMeasure，在onMeasure里会调用所有子元素的Measure方法。这就是一次完整的遍历。
 layout流程跟measure流程差不多。
 Draw流程只是传递流程有区别，前两个方法的调用子View的Measure、Layout流程是在父容器的onMeasure、onLayout里进行的。而调用子View的Draw流程是在父容器的dispatchDraw里面进行的。
@@ -61,7 +61,7 @@ SpecMode有三类
 - EXACTLY 父容器已经检测出View所需要精确大小。这个时候View的大小就是SpecSize的值。对应的是中match_marent和具体数值这两种情况。
 - AT_MOST 对应的是父容器中指定了一个最大可用的大小即SpecSize，View的大小不能超过这个值，它对应的是wrap_content
 
-![](http://opsprcvob.bkt.clouddn.com/MeasureSpec.png)
+![MeasureSpec](https://i.loli.net/2019/01/09/5c35f9f77616b.png)
 解释一下图片
 1. 当子元素已经有确认宽高的时候，例如100dp等，无论父容器的SpecMode是什么，最后子元素的SpecMode都是EXACTLY，大小为子元素定义的大小
 2. 而父容器素是EXACTLY，也就是说父容器是macth_parent或者是有确认值的，而子元素是mactch_parent，那么最后子元素的SpecMode是EXACTLY，SpecSize为父容器剩余的大小，表示子元素要占有这么大
@@ -87,7 +87,7 @@ public static int getDefaultSize(int size, int measureSpec){
     int result = size;
     int specMode = MeasureSpec.getMode(measureSpec);
     int specSize = MeasureSpec.getSize(measureSpec);
-    
+
     switch(specMode){
         ...
         case MeasureSpec.AT_MOST:
@@ -102,16 +102,16 @@ public static int getDefaultSize(int size, int measureSpec){
 ```
 protect void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
     super.onMeasure(widthMeasureSpec,  heightMeasureSpec);
-    
+
     //自己定义wrap_content想要的大小
     int mWidth = xx;
     int mHeight = yy;
-    
+
     int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
     int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
     int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
     int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
-    
+
     if(widthSpecMode == MeasureSpec.AT_MOST && heightSpecMode == MeasureSpec.AT_MOST){
         setMesuredDimension(mWidth, mHeight);
     }else if(widthSpecMode == MeasureSpec.AT_MOST){
@@ -137,7 +137,7 @@ public void layout(int l, int t, int r, int b) {
     int oldR = mRight;
 
     boolean changed = isLayoutModeOptical(mParent) ?
-            setOpticalFrame(l, t, r, b) : setFrame(l, t, r, b); 
+            setOpticalFrame(l, t, r, b) : setFrame(l, t, r, b);
 
     if (changed || (mPrivateFlags & PFLAG_LAYOUT_REQUIRED) == PFLAG_LAYOUT_REQUIRED) {
         onLayout(changed, l, t, r, b);             // 2

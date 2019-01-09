@@ -201,7 +201,7 @@ private void finish(Result result){
 }
 ```
 这段代码很简单，逻辑是如果AsyncTask被取消执行了，那么久调用onCancellled方法，否则就调用onPostExecute。
-![](http://opsprcvob.bkt.clouddn.com/AsyncTask%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.png)
+![AsyncTask的工作原理](https://i.loli.net/2019/01/09/5c35f35bd945e.png)
 
 ### HandlerThread
 HandlerThread继承了Thread，它是一种可以使用Handler的Thread。它的run方法中已经通过Looper.prepare()，Looper.loop()开启消息循环了。这样在实际的使用就允许在HandlerThread中创建Handler了。它的run方法如下

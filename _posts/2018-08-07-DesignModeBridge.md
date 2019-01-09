@@ -22,7 +22,7 @@ categories: [设计模式]
 - ConcreteImplementorA 和 ConcreteImplementorB ：实现部分的具体实现
 完善实现部分中定义的具体逻辑。
 
-![](http://opsprcvob.bkt.clouddn.com/%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F.png)
+![桥接模式](https://i.loli.net/2019/01/09/5c35e6dad2dee.png)
 
 （对比装饰模式，最大的区别就是这两部分是继承不同类/接口的，而装饰模式下两部分都是继承相同接口/接口）
 例子：

@@ -9,7 +9,7 @@ categories: [设计模式]
 
 备忘录模式要保证保存的对象状态不能被对象从外部访问，保护好被保存的这些对象状态的完整性以及内部实现不向外部暴露。
 
-![](http://opsprcvob.bkt.clouddn.com/%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F.png)
+![备忘录模式](https://i.loli.net/2019/01/09/5c3592d18c54f.png)
 
 - Originator：负责创建一个备忘录，可以记录，恢复自身内部的状态。同时可以决定哪些状态需要备忘。
 - Memoto：备忘录角色，用于存储Originator的内部状态，并且可以防止Originator之外的对象直接访问到Memoto。

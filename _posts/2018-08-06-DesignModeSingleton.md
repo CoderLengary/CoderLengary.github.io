@@ -9,7 +9,7 @@ categories: [设计模式]
 ## 单例模式
 定义：保证一个类仅有一个实例，并提供一个访问它的全局访问点。
 
-![](http://opsprcvob.bkt.clouddn.com/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F.png)
+![单例模式](https://i.loli.net/2019/01/09/5c35e736d9fa5.png)
 
 ### 饿汉模式
 ```

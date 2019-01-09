@@ -9,9 +9,9 @@ categories: [设计模式]
 
  在日常生活中，这种情景处处可见，我们向上级请假，一旦天数超过上级的限制，上机就要再向他的上级请求批示。一级一级往上传。
 
- ![](http://opsprcvob.bkt.clouddn.com/%E8%B4%A3%E4%BB%BB%E9%93%BE.png)
+ ![责任链](https://i.loli.net/2019/01/09/5c3592a99b639.png)
 
- ![](http://opsprcvob.bkt.clouddn.com/%E8%B4%A3%E4%BB%BB%E9%93%BE-custom.png)
+ ![责任链-custom](https://i.loli.net/2019/01/09/5c35928fd49f8.png)
 
  责任链模式有如下角色：
  - Ratify：处理事务的抽象角色

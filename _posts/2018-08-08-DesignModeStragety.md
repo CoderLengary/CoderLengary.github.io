@@ -12,7 +12,7 @@ categories: [设计模式]
 
 它的定义是：定义一系列算法，把每一个算法封装起来，并且使它们相互可以替换。
 
-![](http://opsprcvob.bkt.clouddn.com/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F.png)
+![策略模式](https://i.loli.net/2019/01/09/5c358405ae462.png)
 在策略模式中有以下角色：
 - Context： 上下文角色，用来操作策略的上下文环境，起到承上启下的作用，屏蔽高层模块对策略、算法的直接访问。
 - Stragety：抽象策略角色，策略、算法的抽象，通常为接口
@@ -178,4 +178,4 @@ public boolean getTransformation(long currentTime, Transformation outTransformat
     }
 ```
 
-![](http://opsprcvob.bkt.clouddn.com/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F-Android.png)
+![策略模式-Android](https://i.loli.net/2019/01/09/5c35842f2a3ab.png)

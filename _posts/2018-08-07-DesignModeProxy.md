@@ -9,7 +9,7 @@ categories: [设计模式]
 
 它的定义是：为其它对象提供一种代理以控制对这个对象的访问。
 
-![](http://opsprcvob.bkt.clouddn.com/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F.png)
+![代理模式](https://i.loli.net/2019/01/09/5c3592fa68628.pngg)
 
 在代理模式有如下角色：
 1. Subject：抽象主题类，声明真实主题与代理的共同接口方法
